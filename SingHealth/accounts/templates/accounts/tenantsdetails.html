@@ -1,0 +1,62 @@
+{% extends 'accounts/main.html' %}
+{% load static %} 
+{% block content %}
+
+<html>
+  <head>
+    <title>Tenant Details</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="{% static 'CSS/Navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/tenant.css' %}" />
+    <link rel="stylesheet" href="{% static 'CSS/index.css' %}"  rel="stylesheet" type="text/css"/>
+  </head>
+
+        <h1>{{tenants.name}}</h1>
+        <h4>Category : {{tenants.category}}</h4>
+        <h4>Date Started : {{tenants.date_created}}</h4>
+        <h4>Status : {{tenants.status}}</h4>
+        <h4>Description : {{tenants.description}}</h4>
+
+        
+        {% comment %} {% include "./chart.html" %} {% endcomment %}
+        
+        <h2>Past Audits</h2>
+        <div><a href={% url 'chart' %}>View Graph ></a>
+        <a href = "{% url 'export_excel' %} " style="float:right">Export Graph as Excel ></a></div>
+        
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Conducted By</th>
+                <th>Score</th>
+                {% comment %} <th>Comment(Score)</th> {% endcomment %}
+                {% comment %} <th>View</th> {% endcomment %}
+            </tr>
+            {% for i in audits %}
+                <tr>
+                    <td>{{ i.pk }}</td>
+                    <td>{{ i.date_audited }}</td>    
+                    <td>{{ i.staff }}</td>
+                    <td>{{ i.score }}</td>
+                    {% comment %} <td>{{ i.comment }}</td> 
+                    <td>
+                            <button  class="Gallery" onclick = "location.href = ' '">Details</button>
+                    </td>{% endcomment %}
+                </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Photos Taken</h2>
+        {% for image in images %}
+            <div class="tableContainer">
+              <p style="display: block; width: 60%; height: auto; float: left; " >{{ image.tenant.name }}</p>
+              <img src="{{ image.actual_img.url }}" style="display: block; width: 60%; height: auto; float: left; margin: 3rem;" />
+            </div>
+        {% endfor %}
+</html>
+
+{% endblock %}
